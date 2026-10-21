@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tumbler &amp; Dabara | Filter Coffee House</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Work+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <div class="logo">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M8 4h10l-1.5 15h-7z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 19h20l-2 4H5z" fill="currentColor"/></svg>
+      Tumbler &amp; Dabara
+    </div>
+    <div class="links">
+      <a href="#menu">Menu</a><a href="#brew">Our coffee</a><a href="#visit">Visit</a>
+      <span class="status"><span class="dot" id="openDot"></span><span id="openText">Checking hours</span></span>
+      <a class="btn trayBtn" href="#tray" id="trayJump">Order<span class="badge" id="badge" hidden>0</span></a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Filter coffee house · Basavanagudi, Bengaluru</span>
+      <h1>Strong decoction.<br>Soft idlis. <em>Since 1998.</em></h1>
+      <p>Fresh-ground peaberry and plantation A beans, slow-dripped in brass filters every morning. Served the old way, frothed by hand from a tall pour, in a steel tumbler and dabara.</p>
+      <div class="cta">
+        <a class="btn" href="#menu">See the menu</a>
+        <a class="btn line" href="#visit">Book a table</a>
+      </div>
+      <div class="facts">
+        <div><b>80:20</b>coffee to chicory</div>
+        <div><b>6:30 am</b>first decoction</div>
+        <div><b>₹40</b>a tumbler</div>
+      </div>
+    </div>
+    <div class="art" aria-hidden="true">
+      <svg viewBox="0 0 320 300">
+        <g class="steam" fill="none" stroke="var(--leaf-ink)" stroke-width="3" stroke-linecap="round">
+          <path d="M140 70c-10-14 10-22 0-38"/>
+          <path d="M162 66c-10-14 10-22 0-38"/>
+          <path d="M184 70c-10-14 10-22 0-38"/>
+        </g>
+        <ellipse cx="160" cy="262" rx="132" ry="22" fill="#000" opacity=".18"/>
+        <!-- dabara (bowl) -->
+        <path d="M44 210h232c-6 34-40 52-116 52S50 244 44 210z" fill="#c9ced1"/>
+        <path d="M40 204h240v10H40z" fill="#e4e8ea"/>
+        <path d="M60 220h200" stroke="#a8afb3" stroke-width="2"/>
+        <!-- tumbler -->
+        <path d="M112 82h96l-12 130h-72z" fill="#dfe4e6"/>
+        <path d="M112 82h96l-2 18h-92z" fill="#f4f6f7"/>
+        <path d="M118 96h84" stroke="#b6bdc1" stroke-width="2"/>
+        <path d="M128 112l8 92" stroke="#ffffff" stroke-width="5" opacity=".7"/>
+        <ellipse cx="160" cy="84" rx="47" ry="8" fill="#7a4a24"/>
+        <ellipse cx="160" cy="84" rx="40" ry="5" fill="#d8b48a"/>
+        <circle cx="150" cy="83" r="2" fill="#f3e3cc"/><circle cx="170" cy="85" r="1.6" fill="#f3e3cc"/><circle cx="160" cy="82" r="1.4" fill="#f3e3cc"/>
+        <!-- coffee in bowl -->
+        <ellipse cx="160" cy="209" rx="112" ry="6" fill="#8a5630"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section id="menu">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <span class="eyebrow">Today's menu</span>
+        <h2>From the tiffin counter</h2>
+      </div>
+      <p>Everything is vegetarian and made in our kitchen. Tiffin is served 7 am to 11:30 am and again from 4 pm. Prices include packing for takeaway.</p>
+    </div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="menuGrid">
+      <div class="items" id="items"></div>
+      <aside class="tray" id="tray">
+        <h3>Your order</h3>
+        <div class="seg" role="group" aria-label="Order type">
+          <button type="button" id="dineIn" aria-pressed="true">Dine in</button>
+          <button type="button" id="takeAway" aria-pressed="false">Takeaway</button>
+        </div>
+        <div class="lines" id="lines"></div>
+        <div class="sum" id="sum" hidden>
+          <div><span>Subtotal</span><span class="mono" id="sub"></span></div>
+          <div><span>GST 5%</span><span class="mono" id="gst"></span></div>
+          <div class="total"><span>Total</span><span class="mono" id="total"></span></div>
+        </div>
+        <button class="btn" type="button" id="placeOrder" disabled>Place order</button>
+        <p class="note" id="trayNote">Add items from the menu to start your order.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="brew" id="brew">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="eyebrow">How we brew</span><h2>Four steps, every morning</h2></div>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">Step 1</span><h3>Roast</h3><p>Beans from a Chikmagalur estate are roasted dark twice a week, in small batches.</p></div>
+      <div class="step"><span class="n">Step 2</span><h3>Blend</h3><p>We grind them fine with chicory, which gives filter coffee its body and slight bitterness.</p><div class="ratio" title="80% coffee, 20% chicory"><span></span><span></span></div></div>
+      <div class="step"><span class="n">Step 3</span><h3>Drip</h3><p>Hot water drips through the brass filter for about 20 minutes to make a thick decoction.</p></div>
+      <div class="step"><span class="n">Step 4</span><h3>Pour</h3><p>Decoction meets boiled milk and sugar, then gets poured from a height until it froths.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="visit">
+  <div class="wrap visit">
+    <div class="card">
+      <span class="eyebrow">Reservations</span>
+      <h3>Book a table</h3>
+      <p class="note">Walk-ins are always welcome. Booking holds a table for 15 minutes past your time.</p>
+      <form id="bookForm" novalidate>
+        <div class="grid">
+          <label>Name<input id="bName" autocomplete="name" placeholder="Your name"></label>
+          <label>Mobile<input id="bPhone" inputmode="numeric" maxlength="10" placeholder="10-digit number" autocomplete="tel"></label>
+          <label>Date<input id="bDate" type="date"></label>
+          <label>Time<select id="bTime"></select></label>
+          <label>Guests<select id="bGuests"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>8</option></select></label>
+          <label>Seating<select id="bSeat"><option>Indoor</option><option>Courtyard</option></select></label>
+          <label class="full">Note (optional)<textarea id="bNote" rows="2" placeholder="Birthday, high chair, etc."></textarea></label>
+        </div>
+        <p class="err" id="bErr" hidden></p>
+        <div style="margin-top:14px"><button class="btn" type="submit">Request booking</button></div>
+      </form>
+      <p class="ok" id="bOk" hidden></p>
+    </div>
+    <div class="card">
+      <span class="eyebrow">Visit us</span>
+      <h3>Hours</h3>
+      <table class="hours" id="hours"></table>
+      <div class="addr">
+        <strong>Tumbler &amp; Dabara</strong>
+        <span id="addrText">14, DVG Road, Gandhi Bazaar, Basavanagudi, Bengaluru 560004</span>
+        <span class="mono">+91 80 4123 9876</span>
+        <button class="copy" type="button" id="copyAddr">Copy address</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="logo">Tumbler &amp; Dabara</span>
+    <span>Pure vegetarian · No artificial flavour · Demo website</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
