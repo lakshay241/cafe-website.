@@ -1,0 +1,18 @@
+flowchart TD
+  A([Start: visitor opens website]) --> B[Load page]
+  B --> C[Show navbar and hero section]
+  C --> D[Check current time in IST]
+  D --> E{Is cafe open now?}
+  E -- Yes --> F[Show green dot: Open now]
+  E -- No --> G[Show red dot: Closed now]
+  F --> H{What does the visitor choose?}
+  G --> H
+  H -- See the menu --> M[Menu section]
+  H -- Our coffee --> N[How we brew: 4 steps]
+  H -- Book a table --> O[Booking form]
+  H -- Visit --> P[Hours table and address]
+  P --> Q[Copy address button]
+  M --> R([Go to order flow])
+  O --> S([Go to booking flow])
+  N --> H
+  Q --> H

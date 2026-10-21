@@ -1,0 +1,23 @@
+flowchart TD
+  A([Menu section]) --> B[Choose tab: Coffee / Tiffin / Meals / Sweets]
+  B --> C[Show items with price]
+  C --> D{Click Add or + / −?}
+  D -- Add / + --> E[Increase quantity in cart]
+  D -- − --> F[Decrease quantity]
+  F --> G{Quantity = 0?}
+  G -- Yes --> H[Remove item from cart]
+  G -- No --> I[Update cart]
+  E --> I
+  H --> I
+  I --> J[Save cart in browser storage]
+  J --> K[Update order tray and badge count]
+  K --> L[Calculate subtotal + 5% GST = total]
+  L --> M{Dine in or Takeaway?}
+  M -- Dine in --> N[Note: pay at counter]
+  M -- Takeaway --> O[Note: ready in 15 minutes]
+  N --> P{Click Place order?}
+  O --> P
+  P -- No --> B
+  P -- Yes --> Q[Generate token number]
+  Q --> R[Clear cart]
+  R --> S([Show: Order placed, token and total])

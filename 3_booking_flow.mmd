@@ -1,0 +1,17 @@
+flowchart TD
+  A([Booking form]) --> B[Enter name, mobile, date, time, guests, seating]
+  B --> C[Click Request booking]
+  C --> D{Name filled?}
+  D -- No --> E[Error: enter your name]
+  D -- Yes --> F{Mobile is 10 digits starting 6-9?}
+  F -- No --> G[Error: enter valid mobile]
+  F -- Yes --> H{Date chosen?}
+  H -- No --> I[Error: pick a date]
+  H -- Yes --> J{Is it Monday?}
+  J -- Yes --> K[Error: closed on Mondays]
+  J -- No --> L[Hide form]
+  L --> M([Show confirmation message])
+  E --> B
+  G --> B
+  I --> B
+  K --> B
