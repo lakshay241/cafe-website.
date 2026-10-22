@@ -1,169 +1,346 @@
-// Tumbler & Dabara - menu, order tray, hours and booking
-const MENU = {
-  "Coffee": [
-    {id:"c1",name:"Filter coffee",desc:"Our house decoction with boiled milk, frothed by pouring.",price:40,tag:"Bestseller"},
-    {id:"c2",name:"Strong 'by-two'",desc:"One coffee split into two tumblers. Extra decoction, less milk.",price:45},
-    {id:"c3",name:"Sugarless filter coffee",desc:"Same brew, no sugar. Ask for jaggery on the side.",price:40},
-    {id:"c4",name:"Cold filter coffee",desc:"Decoction over ice with chilled milk, shaken.",price:80},
-    {id:"c5",name:"Masala chai",desc:"Assam tea boiled with ginger, cardamom and clove.",price:35},
-    {id:"c6",name:"Badam milk",desc:"Warm milk with ground almonds and saffron.",price:60}
-  ],
-  "Tiffin": [
-    {id:"t1",name:"Idli (2 pcs)",desc:"Soft rice idlis with coconut chutney and sambar.",price:50,tag:"Bestseller"},
-    {id:"t2",name:"Masala dosa",desc:"Crisp ghee-roast dosa with potato palya and red chutney.",price:90,tag:"Bestseller"},
-    {id:"t3",name:"Medu vada (2 pcs)",desc:"Urad dal vadas, crisp outside, soft inside.",price:60},
-    {id:"t4",name:"Rava idli",desc:"Semolina idli with cashew, mustard and curry leaves.",price:60},
-    {id:"t5",name:"Khara bath",desc:"Spiced semolina with vegetables, served with chutney.",price:55},
-    {id:"t6",name:"Set dosa (3 pcs)",desc:"Spongy small dosas with sagu and chutney.",price:80},
-    {id:"t7",name:"Pongal",desc:"Rice and moong dal with pepper, cumin and ghee.",price:65}
-  ],
-  "Meals": [
-    {id:"m1",name:"Mini meals",desc:"Rice, sambar, rasam, two palyas, curd and pickle.",price:140},
-    {id:"m2",name:"Bisi bele bath",desc:"Rice, lentils and vegetables cooked with our own masala.",price:95},
-    {id:"m3",name:"Curd rice",desc:"With pomegranate, ginger and a mustard tadka.",price:70},
-    {id:"m4",name:"Lemon rice",desc:"With peanuts, curry leaves and green chilli.",price:65}
-  ],
-  "Sweets": [
-    {id:"s1",name:"Mysore pak",desc:"Gram flour, sugar and lots of ghee. Melts in the mouth.",price:45},
-    {id:"s2",name:"Kesari bath",desc:"Saffron semolina halwa with pineapple.",price:50},
-    {id:"s3",name:"Holige",desc:"Thin flatbread stuffed with chana dal and jaggery.",price:55},
-    {id:"s4",name:"Payasa",desc:"Vermicelli kheer with cardamom and cashews.",price:50}
-  ]
+// =========================================================
+// Tumbler & Dabara - script.js
+// Menu filter, order tray (with GST), open/closed status,
+// table booking form, copy address, mobile menu
+// =========================================================
+
+// ---------- Menu data ----------
+// To add a photo for any item: save it in the images folder with the
+// file name shown in "img". If the photo is missing, a drawn card is shown.
+const MENU = [
+  // Coffee & Drinks
+  { id: 1,  name: "Filter Coffee",      desc: "Traditional South Indian filter coffee.",              price: 40,  cat: "Coffee",       img: "images/filter-coffee.jpg", popular: true },
+  { id: 2,  name: "Masala Chai",        desc: "Freshly brewed tea with aromatic spices.",             price: 30,  cat: "Coffee",       img: "images/masala-chai.jpg" },
+  { id: 3,  name: "Cappuccino",         desc: "Smooth coffee topped with creamy foam.",               price: 100, cat: "Coffee",       img: "images/cappuccino.jpg" },
+  { id: 7,  name: "Cold Coffee",        desc: "Chilled coffee blended with milk and ice cream.",      price: 90,  cat: "Coffee",       img: "images/cold-coffee.jpg" },
+  { id: 8,  name: "Badam Milk",         desc: "Warm milk with almonds, saffron and cardamom.",        price: 60,  cat: "Coffee",       img: "images/badam-milk.jpg" },
+  { id: 9,  name: "Fresh Lime Soda",    desc: "Sweet or salted, with fresh lime and mint.",           price: 50,  cat: "Coffee",       img: "images/lime-soda.jpg" },
+  { id: 10, name: "Mango Lassi",        desc: "Thick curd blended with Alphonso mango pulp.",         price: 80,  cat: "Coffee",       img: "images/mango-lassi.jpg" },
+
+  // South Indian
+  { id: 4,  name: "Masala Dosa",        desc: "Crispy dosa served with traditional accompaniments.",  price: 90,  cat: "South Indian", img: "images/masala-dosa.jpg", popular: true },
+  { id: 11, name: "Idli (2 pcs)",       desc: "Soft steamed idlis with sambar and chutney.",          price: 50,  cat: "South Indian", img: "images/idli-plate.jpg" },
+  { id: 12, name: "Medu Vada (2 pcs)",  desc: "Crispy urad dal vadas with coconut chutney.",          price: 60,  cat: "South Indian", img: "images/medu-vada.jpg" },
+  { id: 13, name: "Onion Uttapam",      desc: "Thick rice pancake topped with onion and chilli.",     price: 100, cat: "South Indian", img: "images/uttapam.jpg" },
+  { id: 14, name: "Rava Dosa",          desc: "Thin, lacy semolina dosa with cumin and pepper.",      price: 110, cat: "South Indian", img: "images/rava-dosa.jpg" },
+  { id: 15, name: "Ven Pongal",         desc: "Rice and moong dal cooked with ghee and pepper.",      price: 70,  cat: "South Indian", img: "images/pongal.jpg" },
+  { id: 16, name: "Mysore Masala Dosa", desc: "Dosa with spicy red chutney and potato masala.",       price: 110, cat: "South Indian", img: "images/mysore-dosa.jpg" },
+
+  // Fast Food
+  { id: 17, name: "Veg Burger",         desc: "Crunchy veg patty, cheese, lettuce and mayo.",         price: 99,  cat: "Fast Food",    img: "images/veg-burger.jpg", popular: true },
+  { id: 18, name: "Paneer Tikka Wrap",  desc: "Grilled paneer tikka rolled in a soft tortilla.",      price: 130, cat: "Fast Food",    img: "images/paneer-wrap.jpg" },
+  { id: 19, name: "Margherita Pizza",   desc: "7-inch pizza with tomato sauce and mozzarella.",       price: 180, cat: "Fast Food",    img: "images/pizza.jpg" },
+  { id: 20, name: "Pav Bhaji",          desc: "Buttery mashed vegetable curry with 2 soft pavs.",     price: 120, cat: "Fast Food",    img: "images/pav-bhaji.jpg" },
+  { id: 21, name: "Veg Hakka Noodles",  desc: "Wok-tossed noodles with crunchy vegetables.",          price: 130, cat: "Fast Food",    img: "images/noodles.jpg" },
+  { id: 22, name: "French Fries",       desc: "Golden salted fries with peri-peri dip.",              price: 80,  cat: "Fast Food",    img: "images/fries.jpg" },
+  { id: 23, name: "Cheese Garlic Bread", desc: "Toasted bread with garlic butter and cheese.",        price: 110, cat: "Fast Food",    img: "images/garlic-bread.jpg" },
+
+  // Snacks
+  { id: 5,  name: "Veg Sandwich",       desc: "A delicious sandwich with fresh vegetables.",          price: 80,  cat: "Snacks",       img: "images/veg-sandwich.jpg" },
+  { id: 24, name: "Samosa (2 pcs)",     desc: "Potato and pea samosas with mint chutney.",            price: 40,  cat: "Snacks",       img: "images/samosa.jpg" },
+  { id: 25, name: "Vada Pav",           desc: "Mumbai-style potato vada in a pav with chutneys.",     price: 35,  cat: "Snacks",       img: "images/vada-pav.jpg" },
+  { id: 26, name: "Paneer Pakoda",      desc: "Paneer fritters in spiced gram flour batter.",         price: 90,  cat: "Snacks",       img: "images/paneer-pakoda.jpg" },
+  { id: 27, name: "Mysore Bonda (4 pcs)", desc: "Fluffy fried dumplings with coconut chutney.",       price: 50,  cat: "Snacks",       img: "images/bonda.jpg" },
+
+  // Sweets & Desserts
+  { id: 6,  name: "Chocolate Brownie",  desc: "A rich and chocolatey sweet treat.",                   price: 70,  cat: "Sweets",       img: "images/brownie.jpg" },
+  { id: 28, name: "Gulab Jamun (2 pcs)", desc: "Soft khoya dumplings in warm sugar syrup.",           price: 60,  cat: "Sweets",       img: "images/gulab-jamun.jpg", popular: true },
+  { id: 29, name: "Rasmalai (2 pcs)",   desc: "Chenna discs soaked in saffron milk.",                 price: 80,  cat: "Sweets",       img: "images/rasmalai.jpg" },
+  { id: 30, name: "Mysore Pak",         desc: "Classic gram flour and ghee sweet. Melts in the mouth.", price: 50, cat: "Sweets",      img: "images/mysore-pak.jpg" },
+  { id: 31, name: "Kesari Bath",        desc: "Saffron semolina halwa with cashews and raisins.",     price: 60,  cat: "Sweets",       img: "images/kesari.jpg" },
+  { id: 32, name: "Gajar Halwa",        desc: "Slow-cooked carrot halwa with khoya and nuts.",        price: 90,  cat: "Sweets",       img: "images/gajar-halwa.jpg" },
+  { id: 33, name: "Kesar Pista Kulfi",  desc: "Traditional frozen kulfi with saffron and pistachio.", price: 60,  cat: "Sweets",       img: "images/kulfi.jpg" }
+];
+
+// Drawn icon + colour used when an item has no photo yet
+const CATEGORY_LOOK = {
+  "Coffee":       { color: "#5a3a22", icon: '<path d="M5 11h12v3a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5zM17 12h1.5a2 2 0 0 1 0 4H17M9 4c0 2 2 2 2 4M13 4c0 2 2 2 2 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>' },
+  "South Indian": { color: "#2f5a3a", icon: '<path d="M3 15c3-6 15-6 18 0zM3 15h18M8 12l2 3M13 11l1 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>' },
+  "Fast Food":    { color: "#8a3b24", icon: '<path d="M4 11a8 5 0 0 1 16 0zM4 14h16M5 17h14a1 1 0 0 1-1 2H6a1 1 0 0 1-1-2zM9 8h.01M12 7h.01M15 8h.01" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>' },
+  "Snacks":       { color: "#7a5a1e", icon: '<path d="M12 4l8 15H4zM9 14h6M10.5 11h3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>' },
+  "Sweets":       { color: "#7a2e45", icon: '<path d="M3 12h18a9 6 0 0 1-18 0zM8 9a2 2 0 1 1 4 0M12 8a2 2 0 1 1 4 0" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>' }
 };
-const ALL = Object.values(MENU).flat();
-const $ = s => document.querySelector(s);
-const rs = n => "₹" + n.toLocaleString("en-IN", {minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2});
 
-let cat = "Coffee", cart = {}, mode = "Dine in";
-try { cart = JSON.parse(localStorage.getItem("td-cart") || "{}"); } catch (e) { cart = {}; }
-const save = () => { try { localStorage.setItem("td-cart", JSON.stringify(cart)); } catch (e) {} };
-
-/* ---------- menu ---------- */
-function renderTabs(){
-  const box = $("#tabs"); box.innerHTML = "";
-  Object.keys(MENU).forEach(c => {
-    const b = document.createElement("button");
-    b.className = "tab"; b.type = "button"; b.role = "tab"; b.textContent = c;
-    b.setAttribute("aria-selected", c === cat);
-    b.onclick = () => { cat = c; renderTabs(); renderItems(); };
-    box.appendChild(b);
-  });
-}
-function renderItems(){
-  const box = $("#items"); box.innerHTML = "";
-  MENU[cat].forEach(it => {
-    const q = cart[it.id] || 0;
-    const el = document.createElement("div");
-    el.className = "item";
-    el.innerHTML = `<h3><span class="veg" title="Vegetarian"></span>${it.name}${it.tag ? `<span class="tag">${it.tag}</span>` : ""}</h3>
-      <span class="price">${rs(it.price)}</span>
-      <p>${it.desc}</p>
-      ${q ? `<div class="qty"><button type="button" aria-label="Remove one ${it.name}" data-d="-1">−</button><span class="mono">${q}</span><button type="button" aria-label="Add one ${it.name}" data-d="1">+</button></div>`
-          : `<button class="add" type="button">Add</button>`}`;
-    el.querySelectorAll("button").forEach(b => b.onclick = () => change(it.id, b.dataset.d ? +b.dataset.d : 1));
-    box.appendChild(el);
-  });
-}
-function change(id, d){
-  cart[id] = (cart[id] || 0) + d;
-  if (cart[id] <= 0) delete cart[id];
-  save(); renderItems(); renderTray();
+function placeholderHTML(item) {
+  const look = CATEGORY_LOOK[item.cat] || CATEGORY_LOOK.Coffee;
+  return `<div class="img-placeholder" style="--ph:${look.color}">
+            <svg viewBox="0 0 24 24" aria-hidden="true">${look.icon}</svg>
+            <span>${item.name}</span>
+          </div>`;
 }
 
-/* ---------- tray ---------- */
-function renderTray(){
-  const ids = Object.keys(cart);
-  const count = ids.reduce((a, id) => a + cart[id], 0);
-  const badge = $("#badge"); badge.hidden = !count; badge.textContent = count;
-  const lines = $("#lines");
-  if (!ids.length){
-    lines.innerHTML = `<p class="empty">Your tray is empty.</p>`;
-    $("#sum").hidden = true; $("#placeOrder").disabled = true;
-    $("#trayNote").textContent = "Add items from the menu to start your order.";
+const GST_RATE = 0.05;
+const OPEN_HOUR = 8;    // 8:00 AM
+const CLOSE_HOUR = 22;  // 10:00 PM
+
+// ---------- Helpers ----------
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+const rupee = (n) => "₹" + Math.round(n).toLocaleString("en-IN");
+
+let activeCategory = "All";
+let orderType = "Dine In";
+let cart = loadCart();   // { itemId: quantity }
+
+function loadCart() {
+  try { return JSON.parse(localStorage.getItem("td_cart")) || {}; }
+  catch (e) { return {}; }
+}
+function saveCart() {
+  try { localStorage.setItem("td_cart", JSON.stringify(cart)); } catch (e) { /* storage blocked */ }
+}
+
+function showToast(message) {
+  const toast = $("#toast");
+  toast.textContent = message;
+  toast.hidden = false;
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => (toast.hidden = true), 2200);
+}
+
+// ---------- Render menu cards ----------
+function renderMenu() {
+  const grid = $("#menuGrid");
+  const items = activeCategory === "All" ? MENU : MENU.filter((m) => m.cat === activeCategory);
+
+  if (items.length === 0) {
+    grid.innerHTML = `<p class="empty-menu">No items in this category yet.</p>`;
     return;
   }
-  let sub = 0;
-  lines.innerHTML = ids.map(id => {
-    const it = ALL.find(x => x.id === id); const amt = it.price * cart[id]; sub += amt;
-    return `<div class="line"><span>${cart[id]} × ${it.name}</span><span class="mono">${rs(amt)}</span></div>`;
+
+  grid.innerHTML = items.map((item) => {
+    const qty = cart[item.id] || 0;
+    const control = qty
+      ? `<div class="qty-control">
+           <button data-action="minus" data-id="${item.id}" aria-label="Remove one ${item.name}">−</button>
+           <span>${qty}</span>
+           <button data-action="plus" data-id="${item.id}" aria-label="Add one ${item.name}">+</button>
+         </div>`
+      : `<button class="add-btn" data-action="plus" data-id="${item.id}">+ Add</button>`;
+
+    return `
+      <article class="menu-card">
+        <div class="card-img">
+          ${placeholderHTML(item)}
+          <img src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.remove()">
+          ${item.popular ? `<span class="tag-popular">Popular</span>` : ""}
+        </div>
+        <div class="card-body">
+          <h4>${item.name}</h4>
+          <p>${item.desc}</p>
+          <div class="card-foot">
+            <span class="price">${rupee(item.price)}</span>
+            ${control}
+          </div>
+        </div>
+      </article>`;
   }).join("");
-  const gst = Math.round(sub * 0.05 * 100) / 100;
-  $("#sub").textContent = rs(sub); $("#gst").textContent = rs(gst); $("#total").textContent = rs(Math.round(sub + gst));
-  $("#sum").hidden = false; $("#placeOrder").disabled = false;
-  $("#trayNote").textContent = mode === "Dine in" ? "Pay at the counter. Your token number will be called out." : "Ready for pickup in about 15 minutes.";
 }
-function setMode(m){
-  mode = m;
-  $("#dineIn").setAttribute("aria-pressed", m === "Dine in");
-  $("#takeAway").setAttribute("aria-pressed", m === "Takeaway");
-  renderTray();
+
+// ---------- Render order tray ----------
+function renderOrder() {
+  const ids = Object.keys(cart);
+  const list = $("#orderItems");
+  const count = ids.reduce((sum, id) => sum + cart[id], 0);
+
+  // badge on Order button
+  const badge = $("#cartBadge");
+  badge.hidden = count === 0;
+  badge.textContent = count;
+
+  if (ids.length === 0) {
+    list.innerHTML = `<p class="order-empty">Your order is empty.<br>Add something from the menu.</p>`;
+    $("#orderTotals").hidden = true;
+    $("#placeOrder").disabled = true;
+    return;
+  }
+
+  let subtotal = 0;
+  list.innerHTML = ids.map((id) => {
+    const item = MENU.find((m) => m.id === Number(id));
+    if (!item) { delete cart[id]; return ""; }   // item removed from menu
+    const qty = cart[id];
+    subtotal += item.price * qty;
+    const look = CATEGORY_LOOK[item.cat] || CATEGORY_LOOK.Coffee;
+    return `
+      <div class="order-line">
+        <div class="thumb" style="--ph:${look.color}">
+          <span>${item.name.charAt(0)}</span>
+          <img src="${item.img}" alt="" onerror="this.remove()">
+        </div>
+        <div>
+          <h5>${item.name}</h5>
+          <span class="line-price">${rupee(item.price)}</span>
+        </div>
+        <div class="line-actions">
+          <div class="qty-control">
+            <button data-action="minus" data-id="${item.id}" aria-label="Remove one ${item.name}">−</button>
+            <span>${qty}</span>
+            <button data-action="plus" data-id="${item.id}" aria-label="Add one ${item.name}">+</button>
+          </div>
+          <button class="remove-btn" data-action="remove" data-id="${item.id}" aria-label="Remove ${item.name}">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>`;
+  }).join("");
+
+  const gst = subtotal * GST_RATE;
+  $("#subtotal").textContent = rupee(subtotal);
+  $("#gst").textContent = rupee(gst);
+  $("#total").textContent = rupee(subtotal + gst);
+  $("#orderTotals").hidden = false;
+  $("#placeOrder").disabled = false;
 }
-$("#dineIn").onclick = () => setMode("Dine in");
-$("#takeAway").onclick = () => setMode("Takeaway");
-$("#placeOrder").onclick = () => {
-  const token = 100 + Math.floor(Math.random() * 900);
+
+// ---------- Cart actions ----------
+function updateCart(id, action) {
+  const item = MENU.find((m) => m.id === id);
+  if (action === "plus") {
+    cart[id] = (cart[id] || 0) + 1;
+    if (cart[id] === 1) showToast(`${item.name} added to your order`);
+  } else if (action === "minus") {
+    cart[id] = (cart[id] || 0) - 1;
+    if (cart[id] <= 0) delete cart[id];
+  } else if (action === "remove") {
+    delete cart[id];
+  }
+  saveCart();
+  renderMenu();
+  renderOrder();
+}
+
+// One click handler for all +, −, Add and remove buttons
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-action]");
+  if (!btn) return;
+  updateCart(Number(btn.dataset.id), btn.dataset.action);
+});
+
+// ---------- Category filter ----------
+$$(".filter").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    $$(".filter").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeCategory = btn.dataset.cat;
+    renderMenu();
+  });
+});
+
+// ---------- Dine In / Takeaway ----------
+$$(".type-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    $$(".type-btn").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    orderType = btn.dataset.type;
+  });
+});
+
+// ---------- Place order ----------
+$("#placeOrder").addEventListener("click", () => {
   const total = $("#total").textContent;
-  cart = {}; save(); renderItems(); renderTray();
-  $("#lines").innerHTML = `<p class="ok">Order placed (${mode}). Token #${token}, total ${total}.</p><p class="note">This is a demo, so no real order was sent.</p>`;
-};
+  const token = Math.floor(100 + Math.random() * 900);
+  cart = {};
+  saveCart();
+  renderMenu();
+  renderOrder();
+  $("#orderItems").innerHTML =
+    `<div class="order-success">✓ Order placed (${orderType})<br>Token no. <strong>#${token}</strong> · Total ${total}</div>`;
+  showToast("Order placed! Token #" + token);
+});
 
-/* ---------- hours & open status (IST) ---------- */
-const HOURS = [ // 0 = Sunday
-  {d:"Sunday",o:"07:00",c:"21:00"},{d:"Monday",o:null,c:null},{d:"Tuesday",o:"06:30",c:"21:30"},
-  {d:"Wednesday",o:"06:30",c:"21:30"},{d:"Thursday",o:"06:30",c:"21:30"},{d:"Friday",o:"06:30",c:"21:30"},{d:"Saturday",o:"06:30",c:"22:00"}
-];
-const fmt = t => { const [h, m] = t.split(":").map(Number); return `${(h % 12) || 12}:${String(m).padStart(2,"0")} ${h < 12 ? "am" : "pm"}`; };
-function istNow(){
-  const p = new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Kolkata",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());
-  const get = t => p.find(x => x.type === t).value;
-  const day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].indexOf(get("weekday"));
-  return {day, mins: (+get("hour") % 24) * 60 + +get("minute")};
-}
-function renderHours(){
-  const {day, mins} = istNow();
-  const order = [1,2,3,4,5,6,0];
-  $("#hours").innerHTML = order.map(i => {
-    const h = HOURS[i];
-    return `<tr class="${i === day ? "today" : ""}"><td>${h.d}${i === day ? " (today)" : ""}</td><td>${h.o ? fmt(h.o) + " – " + fmt(h.c) : "Closed"}</td></tr>`;
-  }).join("");
-  const h = HOURS[day];
-  const toM = t => { const [a, b] = t.split(":").map(Number); return a * 60 + b; };
-  const open = h.o && mins >= toM(h.o) && mins < toM(h.c);
-  $("#openDot").classList.toggle("open", !!open);
-  $("#openText").textContent = open ? `Open now · till ${fmt(h.c)}` : "Closed now";
-}
-renderHours(); setInterval(renderHours, 60000);
+// ---------- Open / closed status (India time) ----------
+function updateOpenStatus() {
+  const hour = Number(new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kolkata", hour: "2-digit", hour12: false
+  }).format(new Date())) % 24;
 
-/* ---------- booking ---------- */
-(function initBooking(){
-  const times = [];
-  for (let m = 7 * 60; m <= 21 * 60; m += 30) times.push(`${String(Math.floor(m / 60)).padStart(2,"0")}:${String(m % 60).padStart(2,"0")}`);
-  $("#bTime").innerHTML = times.map(t => `<option value="${t}" ${t === "08:00" ? "selected" : ""}>${fmt(t)}</option>`).join("");
-  const d = new Date(); d.setDate(d.getDate() + 1);
-  const iso = x => x.toISOString().slice(0, 10);
-  $("#bDate").min = iso(new Date()); $("#bDate").value = iso(d);
+  const isOpen = hour >= OPEN_HOUR && hour < CLOSE_HOUR;
+  const dot = $("#openDot");
+  const text = $("#openText");
+
+  dot.classList.toggle("open", isOpen);
+  dot.classList.toggle("closed", !isOpen);
+  dot.title = isOpen ? "Open now" : "Closed now";
+  text.textContent = isOpen ? "● Open now" : "● Closed now · opens 8:00 AM";
+  text.className = "open-text " + (isOpen ? "is-open" : "is-closed");
+}
+
+// ---------- Booking form ----------
+(function setupDate() {
+  const today = new Date();
+  const toISO = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  $("#visitDate").min = toISO(today);
 })();
-$("#bookForm").addEventListener("submit", e => {
+
+$("#bookingForm").addEventListener("submit", (e) => {
   e.preventDefault();
-  const err = $("#bErr"), name = $("#bName").value.trim(), phone = $("#bPhone").value.trim(), date = $("#bDate").value;
-  const fail = m => { err.textContent = m; err.hidden = false; };
-  if (!name) return fail("Please enter your name.");
-  if (!/^[6-9]\d{9}$/.test(phone)) return fail("Enter a 10-digit mobile number starting with 6, 7, 8 or 9.");
-  if (!date) return fail("Please pick a date.");
-  const day = new Date(date + "T00:00:00").getDay();
-  if (!HOURS[day].o) return fail("We are closed on Mondays. Please choose another day.");
-  err.hidden = true;
-  const nice = new Date(date + "T00:00:00").toLocaleDateString("en-IN", {weekday:"long", day:"numeric", month:"long"});
+  const name = $("#name").value.trim();
+  const phone = $("#phone").value.trim();
+  const date = $("#visitDate").value;
+  const guests = $("#guests").value;
+  const error = $("#formError");
+
+  if (name.length < 2) return showError("Please enter your name.");
+  if (!/^[6-9]\d{9}$/.test(phone)) return showError("Please enter a valid 10-digit mobile number.");
+  if (!date) return showError("Please choose your visit date.");
+
+  error.hidden = true;
+  const niceDate = new Date(date + "T00:00:00").toLocaleDateString("en-IN", {
+    weekday: "long", day: "numeric", month: "long"
+  });
+
   e.target.hidden = true;
-  const ok = $("#bOk"); ok.hidden = false;
-  ok.textContent = `Thanks, ${name}! Table for ${$("#bGuests").value} (${$("#bSeat").value.toLowerCase()}) requested for ${nice} at ${fmt($("#bTime").value)}. In a live site we would confirm by SMS on ${phone}.`;
+  const success = $("#formSuccess");
+  success.hidden = false;
+  success.textContent = `Thank you, ${name}! Your table for ${guests} on ${niceDate} is requested. We will call you on ${phone} to confirm.`;
+
+  function showError(msg) {
+    error.textContent = msg;
+    error.hidden = false;
+  }
 });
 
-$("#copyAddr").addEventListener("click", async e => {
-  const t = $("#addrText").textContent;
-  try { await navigator.clipboard.writeText(t); e.target.textContent = "Copied"; }
-  catch (_) { const r = document.createRange(); r.selectNodeContents($("#addrText")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); e.target.textContent = "Selected, press Ctrl+C"; }
-  setTimeout(() => e.target.textContent = "Copy address", 2000);
+// Only allow numbers in phone field
+$("#phone").addEventListener("input", (e) => {
+  e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10);
 });
 
-renderTabs(); renderItems(); renderTray();
+// ---------- Copy address ----------
+$("#copyAddress").addEventListener("click", async () => {
+  const address = "Tumbler & Dabara, " + $("#address").textContent;
+  try {
+    await navigator.clipboard.writeText(address);
+    showToast("Address copied");
+  } catch (err) {
+    showToast(address);
+  }
+});
+
+// ---------- Learn more ----------
+$("#learnMore").addEventListener("click", () => {
+  const more = $("#storyMore");
+  more.hidden = !more.hidden;
+  $("#learnMore").firstChild.textContent = more.hidden ? "Learn More " : "Show Less ";
+});
+
+// ---------- Mobile menu ----------
+$("#menuToggle").addEventListener("click", () => {
+  const links = $("#navLinks");
+  const open = links.classList.toggle("open");
+  $("#menuToggle").setAttribute("aria-expanded", open);
+});
+$$("#navLinks a").forEach((a) =>
+  a.addEventListener("click", () => {
+    $$("#navLinks a").forEach((x) => x.classList.remove("active"));
+    a.classList.add("active");
+    $("#navLinks").classList.remove("open");
+  })
+);
+
+// ---------- Start ----------
+$("#year").textContent = new Date().getFullYear();
+renderMenu();
+renderOrder();
+updateOpenStatus();
+setInterval(updateOpenStatus, 60000);
